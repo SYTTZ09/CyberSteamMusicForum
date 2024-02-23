@@ -1,0 +1,17 @@
+#spring:
+#  cloud:
+#    gateway:
+#      globalcors:
+#        cors-configurations:
+#          '[/**]': # 匹配所有请求
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#      routes:
+#        - id: user
+#          uri: lb://cyber-steam-music-user
+#          predicates:
+#            - Path=/user/**
+#          filters:
+#            - StripPrefix= 1

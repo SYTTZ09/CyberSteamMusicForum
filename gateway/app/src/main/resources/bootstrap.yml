@@ -1,0 +1,12 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: cyber-steam-music-app-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
