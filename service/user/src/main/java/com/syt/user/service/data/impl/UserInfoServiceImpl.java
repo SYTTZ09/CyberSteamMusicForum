@@ -1,9 +1,9 @@
-package com.syt.user.service.impl;
+package com.syt.user.service.data.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syt.model.user.dos.UserInfo;
 import com.syt.user.mapper.UserInfoMapper;
-import com.syt.user.service.UserInfoService;
+import com.syt.user.service.data.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

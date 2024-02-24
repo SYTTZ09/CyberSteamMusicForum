@@ -1,30 +1,29 @@
-package com.syt.user.service.impl;
+package com.syt.user.service.business.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.syt.model.common.dtos.res.Response;
 import com.syt.model.common.enums.HttpCode;
 import com.syt.model.user.dos.UserAuth;
 import com.syt.model.user.dos.UserInfo;
 import com.syt.model.user.dtos.req.LoginRequest;
+import com.syt.model.user.dtos.req.RegisterRequest;
 import com.syt.model.user.dtos.res.LoginResponse;
-import com.syt.user.mapper.UserAuthMapper;
-import com.syt.user.service.UserAuthService;
-import com.syt.user.service.UserInfoService;
+import com.syt.model.user.dtos.res.RegisterResponse;
+import com.syt.user.service.business.AccountService;
+import com.syt.user.service.data.UserAuthService;
+import com.syt.user.service.data.UserInfoService;
 import com.syt.util.JwtUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
 @Service
-@Transactional
-@Slf4j
-public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> implements UserAuthService {
+public class AccountServiceImpl implements AccountService {
 
+    @Resource
+    private UserAuthService userAuthService;
     @Resource
     private UserInfoService userInfoService;
 
@@ -41,14 +40,14 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> i
         String password = request.getPassword();
 
         // 校验邮箱与密码
-        if (!StringUtils.isNotBlank(email) && !StringUtils.isNotBlank(password)) {
+        if (StringUtils.isBlank(email) && StringUtils.isBlank(password)) {
             return new Response<>(HttpCode.PARAM_INVALID.getCode(),
                     "邮箱与密码不能为空"
             );
         }
 
         // 根据邮箱查询密码
-        UserAuth dbUserAuth = getOne(Wrappers.<UserAuth>lambdaQuery()
+        UserAuth dbUserAuth = userAuthService.getOne(Wrappers.<UserAuth>lambdaQuery()
                 .eq(UserAuth::getEmail, email)
         );
         if (dbUserAuth == null) {
@@ -80,5 +79,21 @@ public class UserAuthServiceImpl extends ServiceImpl<UserAuthMapper, UserAuth> i
                     setToken(JwtUtil.getJwt(id));
                 }}
         );
+    }
+
+    /**
+     * 注册
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Response<RegisterResponse> register(RegisterRequest request) {
+        // 获取邮箱与密码
+        // 校验邮箱与密码
+        // 查询该邮箱是否已注册
+        // 生成认证邮件
+        // 发送认证邮件
+        return null;
     }
 }
