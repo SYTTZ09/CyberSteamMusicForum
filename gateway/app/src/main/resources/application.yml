@@ -4,8 +4,8 @@
 #      globalcors:
 #        cors-configurations:
 #          '[/**]': # 匹配所有请求
-#            allowedOrigins: "*"
-#            allowedMethods:
+#            allowedOrigins: "*" # 跨域处理 允许所有域
+#            allowedMethods: # 支持的方法
 #              - GET
 #              - POST
 #      routes:
@@ -14,4 +14,4 @@
 #          predicates:
 #            - Path=/user/**
 #          filters:
-#            - StripPrefix= 1
+#            - StripPrefix=1

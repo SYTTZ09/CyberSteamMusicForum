@@ -71,7 +71,7 @@ public class JwtUtil {
     public static Claims getClaims(String token) {
         try {
             return getJws(token).getBody();
-        }catch (ExpiredJwtException e){
+        } catch (Exception e) {
             return null;
         }
     }
