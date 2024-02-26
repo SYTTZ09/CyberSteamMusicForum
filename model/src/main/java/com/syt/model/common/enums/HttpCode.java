@@ -6,6 +6,8 @@ import lombok.Getter;
 public enum HttpCode {
     // 成功段固定为200
     SUCCESS(200, "操作成功"),
+    // 失败段
+    Fail(404, "操作失败"),
     // 登录段1~50
     NEED_LOGIN(1, "需要登录后操作"),
     LOGIN_PASSWORD_ERROR(2, "密码错误"),
