@@ -4,8 +4,16 @@
 #    url: jdbc:mysql://127.0.0.1:3306/cyber_steam?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
 #    username: root
 #    password: 159357
+#  mail:
+#    protocol: smtp
+#    host: smtp.qq.com
+#    port: 25
+#    username: 158677070@qq.com
+#    password: poahowtalgfwbjjg
+#    default-encoding: utf-8
 ## 设置 mapper 对应 xml 文件位置
 #mybatis-plus:
 #  mapper-locations: classpath:mapper/**Mapper.xml
 #  # 设置别名扫描路径
 #  type-aliases-package: com.syt.model.user.dos
+#
