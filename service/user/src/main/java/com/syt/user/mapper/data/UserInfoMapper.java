@@ -1,4 +1,4 @@
-package com.syt.user.mapper;
+package com.syt.user.mapper.data;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.syt.model.user.dos.UserInfo;

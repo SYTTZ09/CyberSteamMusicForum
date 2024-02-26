@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @TableName("user_auth")
@@ -37,4 +38,16 @@ public class UserAuth implements Serializable {
      */
     @TableField("salt")
     private String salt;
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time")
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    @TableField("update_time")
+    private Date updateTime;
 }
