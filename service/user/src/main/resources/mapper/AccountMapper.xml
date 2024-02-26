@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syt.user.mapper.business.AccountMapper">
+
+    <select id="selectActivatedAccountByEmail" resultType="com.syt.model.user.dos.UserAuth">
+        select user_auth.id, user_auth.password, user_auth.salt
+        from user_auth
+                 left join user_state on user_auth.id = user_state.user_auth_id
+        where user_auth.email = #{email}
+          and user_state.is_activated = true
+    </select>
+    
+    <select id="selectActivatedAccountByEmail" resultType="com.syt.model.user.dos.UserAuth">
+        select user_auth.id, user_auth.password, user_auth.salt
+        from user_auth
+                 left join user_state on user_auth.id = user_state.user_auth_id
+        where user_auth.email = #{email}
+          and user_state.is_activated = false
+    </select>
+
+</mapper>
