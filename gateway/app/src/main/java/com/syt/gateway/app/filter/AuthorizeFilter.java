@@ -23,7 +23,8 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
         // 判断是否是登录请求
         if (request.getURI().getPath().contains("/account/login") ||
                 request.getURI().getPath().contains("/account/register") ||
-                request.getURI().getPath().contains("/account/resetPassword")
+                request.getURI().getPath().contains("/account/resetPassword") ||
+                request.getURI().getPath().contains("/account/activate")
         ) {
             // 放行
             return chain.filter(exchange);
