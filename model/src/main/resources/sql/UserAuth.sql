@@ -3,7 +3,7 @@ create table `user_auth`
 (
     `id`       int auto_increment comment '主键',
     `email`    varchar(32) comment '邮箱',
-    `password` varchar(16) comment '密码',
+    `password` varchar(32) comment '密码',
     `salt`     varchar(32) comment '盐',
     `create_time` datetime comment '创建时间',
     `update_time` datetime comment '更新时间',
