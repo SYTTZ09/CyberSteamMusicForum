@@ -43,6 +43,8 @@
 
         <jwt.version>0.9.1</jwt.version>
 
+        <hutool.version>5.6.3</hutool.version>
+
         <swagger.version>2.9.2</swagger.version>
         <knife4j.version>2.0.2</knife4j.version>
     </properties>
@@ -50,6 +52,27 @@
     <!-- 锁定版本  子 model 不用写 group id 和 version -->
     <dependencyManagement>
         <dependencies>
+            <!-- 内部依赖工程 -->
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>model</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>feign</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- spring boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -136,6 +159,13 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
+            </dependency>
+
+            <!-- hutool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

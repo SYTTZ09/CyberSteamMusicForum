@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>user</module>
+        <module>mail</module>
     </modules>
 
     <properties>
@@ -25,12 +26,14 @@
         <dependency>
             <groupId>com.syt</groupId>
             <artifactId>common</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.syt</groupId>
             <artifactId>model</artifactId>
-            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.syt</groupId>
+            <artifactId>feign</artifactId>
         </dependency>
         <!-- spring boot -->
         <dependency>
