@@ -8,10 +8,7 @@ import com.syt.model.user.dtos.res.RegisterResponse;
 import com.syt.user.service.business.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -33,6 +30,12 @@ public class AccountController {
     @ApiOperation("注册")
     public Response<RegisterResponse> register(@RequestBody RegisterRequest request) {
         return accountService.register(request);
+    }
+
+    @GetMapping("/activate")
+    @ApiOperation("激活")
+    public String activate(@RequestParam String email, @RequestParam String token) {
+        return accountService.activate(email, token).getMessage();
     }
 
 

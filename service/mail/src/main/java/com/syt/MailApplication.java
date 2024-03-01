@@ -1,15 +1,13 @@
-package com.syt.user;
+package com.syt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "com.syt.api")
-public class UserApplication {
+public class MailApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class);
+        SpringApplication.run(MailApplication.class);
     }
 }

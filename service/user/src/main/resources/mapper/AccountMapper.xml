@@ -10,7 +10,7 @@
           and user_state.is_activated = true
     </select>
     
-    <select id="selectActivatedAccountByEmail" resultType="com.syt.model.user.dos.UserAuth">
+    <select id="selectUnActivatedAccountByEmail" resultType="com.syt.model.user.dos.UserAuth">
         select user_auth.id, user_auth.password, user_auth.salt
         from user_auth
                  left join user_state on user_auth.id = user_state.user_auth_id

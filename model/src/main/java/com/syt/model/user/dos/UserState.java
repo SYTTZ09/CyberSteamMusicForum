@@ -30,7 +30,7 @@ public class UserState {
      * 是否激活    0 未激活   1 已激活
      */
     @TableField("is_activated")
-    private boolean isActivated;
+    private Boolean isActivated;
 
     /**
      * 创建时间
