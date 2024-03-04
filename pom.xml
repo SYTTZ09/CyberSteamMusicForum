@@ -17,6 +17,7 @@
         <module>gateway</module>
         <module>feign</module>
         <module>util</module>
+        <module>basic</module>
     </modules>
 
     <distributionManagement>
@@ -47,6 +48,8 @@
 
         <swagger.version>2.9.2</swagger.version>
         <knife4j.version>2.0.2</knife4j.version>
+
+        <minio.version>7.1.0</minio.version>
     </properties>
 
     <!-- 锁定版本  子 model 不用写 group id 和 version -->
@@ -71,6 +74,21 @@
             <dependency>
                 <groupId>com.syt</groupId>
                 <artifactId>feign</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>basic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>cyber-steam-music</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- spring boot -->
@@ -166,6 +184,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <!-- minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
