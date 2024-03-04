@@ -1,4 +1,4 @@
-package com.syt.mail.feign;
+package com.syt.mail.feign.v1;
 
 import com.syt.api.mail.MailSendClient;
 import com.syt.mail.service.business.MailSendService;
