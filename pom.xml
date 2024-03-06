@@ -50,6 +50,9 @@
         <knife4j.version>2.0.2</knife4j.version>
 
         <minio.version>7.1.0</minio.version>
+
+
+        <tika.version>1.18</tika.version>
     </properties>
 
     <!-- 锁定版本  子 model 不用写 group id 和 version -->
@@ -89,6 +92,11 @@
             <dependency>
                 <groupId>com.syt</groupId>
                 <artifactId>cyber-steam-music</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syt</groupId>
+                <artifactId>file-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- spring boot -->
@@ -191,6 +199,13 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+
+            <!-- apache tika -->
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${tika.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
