@@ -1,7 +1,7 @@
 package com.syt.model.common.dtos.res;
 
 
-import com.syt.model.common.enums.HttpCode;
+import com.syt.model.common.enums.ResponseCode;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -20,8 +20,8 @@ public class Response<T> implements Serializable {
     private T data;
 
     public Response() {
-        this.code = HttpCode.SUCCESS.getCode();
-        this.message = HttpCode.SUCCESS.getMessage();
+        this.code = ResponseCode.SUCCESS.getCode();
+        this.message = ResponseCode.SUCCESS.getMessage();
     }
 
     public Response(Integer code, String message) {
