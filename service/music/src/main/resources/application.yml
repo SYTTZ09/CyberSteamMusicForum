@@ -1,0 +1,17 @@
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/cyber_steam?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+#    username: root
+#    password: 159357
+## 设置 mapper 对应 xml 文件位置
+#mybatis-plus:
+#  mapper-locations: classpath:mapper/**Mapper.xml
+#  # 设置别名扫描路径
+#  type-aliases-package: com.syt.model.music.dos
+#minio:
+#  accessKey: minio
+#  secretKey: minio123
+#  bucket: CyberSteam
+#  endpoint: http://127.0.0.1:9000
+#  readPath: http://127.0.0.1:9000
