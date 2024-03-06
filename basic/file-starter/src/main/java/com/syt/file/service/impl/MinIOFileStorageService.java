@@ -26,8 +26,7 @@ import java.util.Date;
 @Import(MinIOConfig.class)
 public class MinIOFileStorageService implements FileStorageService {
 
-    @Resource
-    private Tika tika;
+    private static Tika tika;
 
     @Resource
     private MinioClient minioClient;
