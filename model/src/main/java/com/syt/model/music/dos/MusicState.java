@@ -22,6 +22,12 @@ public class MusicState  implements Serializable {
     private Integer id;
 
     /**
+     * 音乐 id
+     */
+    @TableField("music_id")
+    private Integer musicId;
+
+    /**
      * 是否公开
      */
     @TableField("is_public")
