@@ -15,18 +15,18 @@ import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @EnableConfigurationProperties(MinIOConfigProperties.class)
 @Import(MinIOConfig.class)
 public class MinIOFileStorageService implements FileStorageService {
 
-    private static Tika tika;
+    private static final Tika tika = new Tika();
 
     @Resource
     private MinioClient minioClient;
@@ -57,16 +57,34 @@ public class MinIOFileStorageService implements FileStorageService {
      *  上传图片文件
      * @param prefix  文件前缀
      * @param filename  文件名
-     * @param inputStream 文件流
+     * @param fileBytes 文件
      * @return  文件全路径
      */
     @Override
-    public String uploadImgFile(String prefix, String filename, InputStream inputStream) {
-        String filePath = builderFilePath(prefix, filename);
+    public String uploadImgFile(String prefix, String filename, byte[] fileBytes) {
         try {
+            // 校验类型
+            File file = File.createTempFile("tmp","txt");
+            FileOutputStream outputStream = null;
+            outputStream = new FileOutputStream(file);
+            outputStream.write(fileBytes);
+            outputStream.close();
+            String fileType = tika.detect(file);
+            Set<String> fileTypeSet = new HashSet<String>() {{
+                add("image/jpeg");
+                add("image/webp");
+                add("image/png");
+                add("image/bmp");
+                add("image/gif");
+            }};
+            if (!fileTypeSet.contains(fileType)) {
+                throw new RuntimeException("文件格式错误");
+            }
+            FileInputStream inputStream = new FileInputStream(file);
+            String filePath = builderFilePath(prefix, filename);
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .object(filePath)
-                    .contentType(tika.detect(inputStream))
+                    .contentType(fileType)
                     .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-1)
                     .build();
             minioClient.putObject(putObjectArgs);
@@ -75,7 +93,7 @@ public class MinIOFileStorageService implements FileStorageService {
             urlPath.append(separator);
             urlPath.append(filePath);
             return urlPath.toString();
-        }catch (Exception ex){
+        } catch (Exception ex){
             log.error("minio put file error.",ex);
             throw new RuntimeException("上传文件失败");
         }
@@ -83,19 +101,33 @@ public class MinIOFileStorageService implements FileStorageService {
 
 
     /**
-     *  上传图片文件
+     *  上传音乐文件
      * @param prefix  文件前缀
      * @param filename  文件名
-     * @param inputStream 文件流
+     * @param fileBytes 文件
      * @return  文件全路径
      */
     @Override
-    public String uploadMusicFile(String prefix, String filename, InputStream inputStream) {
-        String filePath = builderFilePath(prefix, filename);
+    public String uploadMusicFile(String prefix, String filename, byte[] fileBytes) {
         try {
+            // 校验类型
+            File file = File.createTempFile("tmp","txt");
+            FileOutputStream outputStream = null;
+            outputStream = new FileOutputStream(file);
+            outputStream.write(fileBytes);
+            outputStream.close();
+            String fileType = tika.detect(file);
+            Set<String> fileTypeSet = new HashSet<String>() {{
+                add("audio/mpeg");
+            }};
+            if (!fileTypeSet.contains(fileType)) {
+                throw new RuntimeException("文件格式错误");
+            }
+            FileInputStream inputStream = new FileInputStream(file);
+            String filePath = builderFilePath(prefix, filename);
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .object(filePath)
-                    .contentType(tika.detect(inputStream))
+                    .contentType(fileType)
                     .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-1)
                     .build();
             minioClient.putObject(putObjectArgs);
@@ -104,7 +136,7 @@ public class MinIOFileStorageService implements FileStorageService {
             urlPath.append(separator);
             urlPath.append(filePath);
             return urlPath.toString();
-        }catch (Exception ex){
+        } catch (Exception ex){
             log.error("minio put file error.",ex);
             throw new RuntimeException("上传文件失败");
         }
@@ -114,16 +146,30 @@ public class MinIOFileStorageService implements FileStorageService {
      *  上传html文件
      * @param prefix  文件前缀
      * @param filename   文件名
-     * @param inputStream  文件流
+     * @param fileBytes  文件
      * @return  文件全路径
      */
     @Override
-    public String uploadHtmlFile(String prefix, String filename,InputStream inputStream) {
-        String filePath = builderFilePath(prefix, filename);
+    public String uploadHtmlFile(String prefix, String filename,byte[] fileBytes) {
         try {
+            // 校验类型
+            File file = File.createTempFile("tmp","txt");
+            FileOutputStream outputStream = null;
+            outputStream = new FileOutputStream(file);
+            outputStream.write(fileBytes);
+            outputStream.close();
+            String fileType = tika.detect(file);
+            Set<String> fileTypeSet = new HashSet<String>() {{
+                add("text/html");
+            }};
+            if (!fileTypeSet.contains(fileType)) {
+                throw new RuntimeException("文件格式错误");
+            }
+            FileInputStream inputStream = new FileInputStream(file);
+            String filePath = builderFilePath(prefix, filename);
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .object(filePath)
-                    .contentType(tika.detect(inputStream))
+                    .contentType(fileType)
                     .bucket(minIOConfigProperties.getBucket()).stream(inputStream,inputStream.available(),-1)
                     .build();
             minioClient.putObject(putObjectArgs);
@@ -132,7 +178,7 @@ public class MinIOFileStorageService implements FileStorageService {
             urlPath.append(separator);
             urlPath.append(filePath);
             return urlPath.toString();
-        }catch (Exception ex){
+        } catch (Exception ex){
             log.error("minio put file error.",ex);
             throw new RuntimeException("上传文件失败");
         }
