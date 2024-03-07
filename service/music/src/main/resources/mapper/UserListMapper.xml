@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syt.music.mapper.business.UserListMapper">
+
+    <select id="selectAllMusicByUserId" resultType="com.syt.model.music.dos.MusicInfo">
+        select music_info.id,
+               music_info.name,
+               music_info.singer,
+               music_info.music_src,
+               music_info.image_src,
+               music_info.introduction,
+               music_info.create_time
+        from music_info
+                 left join music_owner
+                           on music_owner.music_id = music_info.id
+        where music_owner.user_id = #{id}
+        order by music_info.create_time
+            limit #{limit}
+        offset #{offset}
+    </select>
+
+    <select id="selectPublicMusicByUserId" resultType="com.syt.model.music.dos.MusicInfo">
+        select music_info.id,
+               music_info.name,
+               music_info.singer,
+               music_info.music_src,
+               music_info.image_src,
+               music_info.introduction,
+               music_info.create_time
+        from music_info
+                 left join music_owner
+                           on music_owner.music_id = music_info.id
+                 right join music_state
+                            on music_state.music_id = music_info.id
+        where music_owner.user_id = #{id}
+          and music_state.is_public = true
+        order by music_info.create_time
+            limit #{limit}
+        offset #{offset}
+    </select>
+
+    <select id="selectPrivateMusicByUserId" resultType="com.syt.model.music.dos.MusicInfo">
+        select music_info.id,
+               music_info.name,
+               music_info.singer,
+               music_info.music_src,
+               music_info.image_src,
+               music_info.introduction,
+               music_info.create_time
+        from music_info
+                 left join music_owner
+                           on music_owner.music_id = music_info.id
+                 right join music_state
+                            on music_state.music_id = music_info.id
+        where music_owner.user_id = #{id}
+          and music_state.is_public = false
+        order by music_info.create_time
+            limit #{limit}
+        offset #{offset}
+    </select>
+
+</mapper>
