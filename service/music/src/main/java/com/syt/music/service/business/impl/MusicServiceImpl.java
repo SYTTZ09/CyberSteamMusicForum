@@ -15,16 +15,12 @@ import com.syt.music.service.data.MusicStateService;
 import com.syt.util.thread.UserIdThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayInputStream;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -62,11 +58,16 @@ public class MusicServiceImpl implements MusicService {
         if (StringUtils.isBlank(name) ||
                 StringUtils.isBlank(singer) ||
                 StringUtils.isBlank(musicBase64String) ||
-                StringUtils.isBlank(imageBase64String) ||
                 isPublic == null
         ) {
             return new Response<>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "歌名、歌手、音乐都不能为空",
+                    "fail"
+            );
+        }
+        if (name.length() > 100 || singer.length() > 100 || introduction.length() > 1000) {
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "字数超出限制",
                     "fail"
             );
         }
@@ -75,51 +76,40 @@ public class MusicServiceImpl implements MusicService {
         Date currentTime = new Date();
         String imageFileId = null;
         String musicFileId = null;
-        Tika tika = new Tika();
         // 3.1 image
         if (StringUtils.isNotBlank(imageBase64String)) {
-            byte[] imageBytes = Base64.getDecoder().decode(imageBase64String);
-            // 校验类型
-            String imageType = tika.detect(imageBytes);
-            Set<String> imageTypeSet = new HashSet<String>() {{
-                add("image/jpeg");
-                add("image/webp");
-                add("image/png");
-                add("image/bmp");
-                add("image/gif");
-            }};
-            if (!imageTypeSet.contains(imageType)) {
-                return new Response<>(ResponseCode.PARAM_INVALID.getCode(),
-                        "只能上传图片格式文件!",
+            // 解析 base64
+            byte[] imageBytes = Base64.getMimeDecoder().decode(imageBase64String);
+            try {
+                // 保存
+                String imageFileName = name + currentTime.getTime();
+                imageFileId = fileStorageService.uploadImgFile("image",
+                        imageFileName,
+                        imageBytes
+                );
+            } catch (Exception e) {
+                return new Response<>(ResponseCode.Fail.getCode(),
+                        "图片保存失败!",
                         "fail"
                 );
             }
-            // 保存
-            String imageFileName = name + currentTime.getTime();
-            imageFileId = fileStorageService.uploadImgFile("",
-                    imageFileName,
-                    new ByteArrayInputStream(imageBytes)
-            );
         }
         // 3.2 music
-        byte[] musicBytes = Base64.getDecoder().decode(musicBase64String);
-        // 校验类型
-        String musicType = tika.detect(musicBytes);
-        Set<String> musicTypeSet = new HashSet<String>() {{
-            add("audio/mpeg");
-        }};
-        if (!musicTypeSet.contains(musicType)) {
-            return new Response<>(ResponseCode.PARAM_INVALID.getCode(),
-                    "只能上传音乐格式文件!",
+        // 解析 base64
+        byte[] musicBytes = Base64.getMimeDecoder().decode(musicBase64String);
+        try {
+            // 保存
+            String musicFileName = name + currentTime.getTime();
+            musicFileId = fileStorageService.uploadMusicFile("music",
+                    musicFileName,
+                    musicBytes
+            );
+        } catch (Exception e) {
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "音乐保存失败!",
                     "fail"
             );
         }
-        // 保存
-        String musicFileName = name + currentTime.getTime();
-        musicFileId = fileStorageService.uploadMusicFile("",
-                musicFileName,
-                new ByteArrayInputStream(musicBytes)
-        );
 
         // 6 构造实体
         // 6.1  MusicInfo
