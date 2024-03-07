@@ -13,5 +13,5 @@
 #  accessKey: minio
 #  secretKey: minio123
 #  bucket: CyberSteam
-#  endpoint: http://127.0.0.1:9000
-#  readPath: http://127.0.0.1:9000
+#  endpoint: http://127.0.0.1:9090
+#  readPath: http://127.0.0.1:9090
