@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("MusicOwner")
+@TableName("music_owner")
 public class MusicOwner  implements Serializable {
 
     private static final long serializableUID = 1L;
@@ -30,7 +30,7 @@ public class MusicOwner  implements Serializable {
     /**
      * 用户 id
      */
-    @TableId("user_id")
+    @TableField("user_id")
     private Integer userId;
 
     /**
