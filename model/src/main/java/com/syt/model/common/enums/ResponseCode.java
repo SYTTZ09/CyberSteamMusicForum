@@ -3,7 +3,7 @@ package com.syt.model.common.enums;
 import lombok.Getter;
 
 @Getter
-public enum HttpCode {
+public enum ResponseCode {
     // 成功段固定为200
     SUCCESS(200, "操作成功"),
     // 失败段
@@ -31,7 +31,7 @@ public enum HttpCode {
     final int code;
     final String message;
 
-    HttpCode(int code, String message) {
+    ResponseCode(int code, String message) {
         this.code = code;
         this.message = message;
     }

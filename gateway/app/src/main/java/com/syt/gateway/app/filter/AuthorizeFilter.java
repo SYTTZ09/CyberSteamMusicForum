@@ -20,7 +20,7 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
         // 获取 request response
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
-        // 判断是否是登录请求
+        // 判断是否是放行请求
         if (request.getURI().getPath().contains("/account/login") ||
                 request.getURI().getPath().contains("/account/register") ||
                 request.getURI().getPath().contains("/account/resetPassword") ||
@@ -40,9 +40,19 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
         Claims claims = JwtUtil.getClaims(token);
         int status = JwtUtil.verify(claims);
         switch (status) {
+            // 有效
             case -1:
             case 0:
+                // 获取 userId
+                Object userId = claims.get("id");
+                // 存储到 header 中
+                ServerHttpRequest serverHttpRequest = request.mutate().headers(httpHeaders -> {
+                    httpHeaders.add("userId", userId + "");
+                }).build();
+                // 重置请求
+                exchange.mutate().request(serverHttpRequest);
                 break;
+            // 过期
             case 1:
             case 2:
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);

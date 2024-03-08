@@ -4,7 +4,6 @@ import com.syt.model.common.dtos.res.Response;
 import com.syt.model.user.dtos.req.LoginRequest;
 import com.syt.model.user.dtos.req.RegisterRequest;
 import com.syt.model.user.dtos.res.LoginResponse;
-import com.syt.model.user.dtos.res.RegisterResponse;
 import com.syt.user.service.business.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +27,7 @@ public class AccountController {
 
     @PostMapping("/register")
     @ApiOperation("注册")
-    public Response<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public Response<String> register(@RequestBody RegisterRequest request) {
         return accountService.register(request);
     }
 

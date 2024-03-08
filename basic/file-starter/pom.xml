@@ -5,55 +5,48 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.syt</groupId>
-        <artifactId>cyber-steam-music</artifactId>
+        <artifactId>basic</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>user</module>
-        <module>music</module>
-        <module>mail</module>
-    </modules>
+    <artifactId>file-starter</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.syt</groupId>
-            <artifactId>common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.syt</groupId>
-            <artifactId>model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.syt</groupId>
-            <artifactId>feign</artifactId>
-        </dependency>
-        <!-- spring boot -->
-        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- spring cloud -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- apache tika -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
         </dependency>
     </dependencies>
 

@@ -5,7 +5,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.syt.api.mail.MailSendClient;
 import com.syt.model.common.dtos.res.Response;
-import com.syt.model.common.enums.HttpCode;
+import com.syt.model.common.enums.ResponseCode;
 import com.syt.model.mail.dtos.req.SendButtonMailRequest;
 import com.syt.model.user.dos.UserActivate;
 import com.syt.model.user.dos.UserAuth;
@@ -13,9 +13,7 @@ import com.syt.model.user.dos.UserInfo;
 import com.syt.model.user.dos.UserState;
 import com.syt.model.user.dtos.req.LoginRequest;
 import com.syt.model.user.dtos.req.RegisterRequest;
-import com.syt.model.user.dtos.res.ActivateResponse;
 import com.syt.model.user.dtos.res.LoginResponse;
-import com.syt.model.user.dtos.res.RegisterResponse;
 import com.syt.user.mapper.business.AccountMapper;
 import com.syt.user.service.business.AccountService;
 import com.syt.user.service.data.UserActivateService;
@@ -81,8 +79,9 @@ public class AccountServiceImpl implements AccountService {
 
         // 2 校验邮箱与密码
         if (StringUtils.isBlank(email) && StringUtils.isBlank(password)) {
-            return new Response<>(HttpCode.PARAM_INVALID.getCode(),
-                    "邮箱与密码不能为空"
+            return new Response<>(ResponseCode.PARAM_INVALID.getCode(),
+                    "邮箱与密码不能为空",
+                    null
             );
         }
 
@@ -91,12 +90,14 @@ public class AccountServiceImpl implements AccountService {
         if (dbUserAuth == null) {
             dbUserAuth = accountMapper.selectUnActivatedAccountByEmail(email);
             if (dbUserAuth != null) {
-                return new Response<>(HttpCode.DATA_EXIST.getCode(),
-                        "邮箱对应账号未激活, 请前往邮箱激活账号"
+                return new Response<>(ResponseCode.DATA_EXIST.getCode(),
+                        "邮箱对应账号未激活, 请前往邮箱激活账号",
+                        null
                 );
             }
-            return new Response<>(HttpCode.DATA_NOT_EXIST.getCode(),
-                    "邮箱对应账号不存在"
+            return new Response<>(ResponseCode.DATA_NOT_EXIST.getCode(),
+                    "邮箱对应账号不存在",
+                    null
             );
         }
 
@@ -104,8 +105,9 @@ public class AccountServiceImpl implements AccountService {
         String salt = dbUserAuth.getSalt();
         String md5Password = DigestUtil.md5Hex(password + salt);
         if (!md5Password.equals(dbUserAuth.getPassword())) {
-            return new Response<>(HttpCode.LOGIN_PASSWORD_ERROR.getCode(),
-                    "密码错误"
+            return new Response<>(ResponseCode.LOGIN_PASSWORD_ERROR.getCode(),
+                    "密码错误",
+                    null
             );
         }
 
@@ -115,11 +117,12 @@ public class AccountServiceImpl implements AccountService {
                 .eq(UserInfo::getUserAuthId, id)
         );
         if (dbUserInfo == null) {
-            return new Response<>(HttpCode.DATA_NOT_EXIST.getCode(),
-                    "用户信息不存在"
+            return new Response<>(ResponseCode.DATA_NOT_EXIST.getCode(),
+                    "用户信息不存在",
+                    null
             );
         }
-        return new Response<>(HttpCode.SUCCESS.getCode(),
+        return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "登录成功",
                 new LoginResponse() {{
                     setEmail(email);
@@ -136,15 +139,16 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Response<RegisterResponse> register(RegisterRequest request) {
+    public Response<String> register(RegisterRequest request) {
         // 1 获取邮箱与密码
         String email = request.getEmail();
         String password = request.getPassword();
 
         // 2 校验邮箱与密码
         if (StringUtils.isBlank(email) && StringUtils.isBlank(password)) {
-            return new Response<>(HttpCode.PARAM_INVALID.getCode(),
-                    "邮箱与密码不能为空"
+            return new Response<>(ResponseCode.PARAM_INVALID.getCode(),
+                    "邮箱与密码不能为空",
+                    "fail"
             );
         }
 
@@ -152,8 +156,9 @@ public class AccountServiceImpl implements AccountService {
         // 3.1 查询已激活账号
         UserAuth dbUserAuth = accountMapper.selectActivatedAccountByEmail(email);
         if (dbUserAuth != null) {
-            return new Response<>(HttpCode.DATA_EXIST.getCode(),
-                    "邮箱对应账号已存在"
+            return new Response<>(ResponseCode.DATA_EXIST.getCode(),
+                    "邮箱对应账号已存在",
+                    "fail"
             );
         }
         // 3.2 查询待激活账号
@@ -168,8 +173,9 @@ public class AccountServiceImpl implements AccountService {
             // 3.2.1.2 未超过激活时间
             Date currentTime = new Date();
             if (currentTime.getTime() < dbUserActivate.getDeadline().getTime()) {
-                return new Response<>(HttpCode.Fail.getCode(),
-                        "已发送激活邮件到该邮箱中，请前往邮箱激活账号"
+                return new Response<>(ResponseCode.Fail.getCode(),
+                        "已发送激活邮件到该邮箱中，请前往邮箱激活账号",
+                        "success"
                 );
             }
             // 3.2.1.3 激活超时
@@ -235,11 +241,17 @@ public class AccountServiceImpl implements AccountService {
         switch (sendMailResult) {
             case -1:
             case 1:
-                return new Response<>(HttpCode.Fail.getCode(), "激活邮件发送失败，请检查邮箱是否正确，并稍后重试");
+                return new Response<>(ResponseCode.Fail.getCode(),
+                        "激活邮件发送失败，请检查邮箱是否正确，并稍后重试",
+                        null
+                );
             case 0:
                 break;
         }
-        return new Response<>(HttpCode.SUCCESS.getCode(), "注册成功，请在 24 小时内前往邮箱激活账号");
+        return new Response<>(ResponseCode.SUCCESS.getCode(),
+                "注册成功，请在 24 小时内前往邮箱激活账号",
+                "success"
+        );
     }
 
     /**
@@ -250,11 +262,12 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Response<ActivateResponse> activate(String email, String token) {
+    public Response<String> activate(String email, String token) {
         // 1 校验邮箱与密钥
         if (StringUtils.isBlank(email) && StringUtils.isBlank(token)) {
-            return new Response<>(HttpCode.PARAM_INVALID.getCode(),
-                    "邮箱与密钥不能为空"
+            return new Response<>(ResponseCode.PARAM_INVALID.getCode(),
+                    "邮箱与密钥不能为空",
+                    "fail"
             );
         }
         // 2 邮箱是否存在
@@ -263,8 +276,9 @@ public class AccountServiceImpl implements AccountService {
                 .eq(UserAuth::getEmail, email)
         );
         if (dbUserAuth == null) {
-            return new Response<>(HttpCode.Fail.getCode(),
-                    "该邮箱对应账号不存在"
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "该邮箱对应账号不存在",
+                    "fail"
             );
         }
         UserState dbUserState = userStateService.getOne(Wrappers.<UserState>lambdaQuery()
@@ -273,8 +287,9 @@ public class AccountServiceImpl implements AccountService {
                 .eq(UserState::getIsActivated, true)
         );
         if (dbUserState != null) {
-            return new Response<>(HttpCode.Fail.getCode(),
-                    "该邮箱对应账号已经激活好了哦"
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "该邮箱对应账号已经激活好了哦",
+                    "fail"
             );
         }
         // 3 获取验证码
@@ -283,21 +298,24 @@ public class AccountServiceImpl implements AccountService {
                 .eq(UserActivate::getUserAuthId, dbUserAuth.getId())
         );
         if (dbUserActivate == null) {
-            return new Response<>(HttpCode.DATA_NOT_EXIST.getCode(),
-                    "无效的激活链接，请确认后重试"
+            return new Response<>(ResponseCode.DATA_NOT_EXIST.getCode(),
+                    "无效的激活链接，请确认后重试",
+                    "fail"
             );
         }
         // 3.1 验证码过期
         Date currentTime = new Date();
         if (currentTime.getTime() > dbUserActivate.getDeadline().getTime()) {
-            return new Response<>(HttpCode.Fail.getCode(),
-                    "激活失败，链接已过期"
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "激活失败，链接已过期",
+                    "fail"
             );
         }
         // 4 验证 token
         if (!token.equals(DigestUtil.md5Hex(dbUserActivate.getCode() + dbUserAuth.getSalt()))) {
-            return new Response<>(HttpCode.Fail.getCode(),
-                    "激活失败，密钥错误"
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "激活失败，密钥错误",
+                    "fail"
             );
         }
         // 5 验证成功
@@ -319,8 +337,9 @@ public class AccountServiceImpl implements AccountService {
         userInfoService.save(userInfo);
 
         // 6 返回响应
-        return new Response<>(HttpCode.SUCCESS.getCode(),
-                "激活成功，感谢注册蒸汽赛博平台账号"
+        return new Response<>(ResponseCode.SUCCESS.getCode(),
+                "激活成功，感谢注册蒸汽赛博平台账号",
+                "success"
         );
     }
 
