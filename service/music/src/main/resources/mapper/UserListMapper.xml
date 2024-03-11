@@ -30,7 +30,7 @@
         from music_info
                  left join music_owner
                            on music_owner.music_id = music_info.id
-                 right join music_state
+                 left join music_state
                             on music_state.music_id = music_info.id
         where music_owner.user_id = #{id}
           and music_state.is_public = true
@@ -50,7 +50,7 @@
         from music_info
                  left join music_owner
                            on music_owner.music_id = music_info.id
-                 right join music_state
+                 left join music_state
                             on music_state.music_id = music_info.id
         where music_owner.user_id = #{id}
           and music_state.is_public = false
