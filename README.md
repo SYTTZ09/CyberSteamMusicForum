@@ -1,27 +1,30 @@
-# 蒸汽赛博音乐论坛后端
+# Steam Cyber Music Forum
 
-#### 介绍
-蒸汽赛博音乐论坛项目后端代码
+#### Introduction
 
-#### 软件架构
-软件架构说明
+using spring boot and spring cloud to coding a music forum
 
+#### Software Architecture
 
-#### 安装教程
+jdk 1.8
+maven
+nacos
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### Installation Tutorial
 
-#### 使用说明
+1. maven pakage program into jar
+2. java -jar
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### Instruction For Use
 
-#### 参与贡献
+1. AppGatewat 9999
+2. UserService 9001
+3. MailService 9002
+4. MusicService 9003
 
-1.  拉取本仓库
-2.  从 develop 新建 feature 分支
-3.  提交代码
-4.  新建 Pull Request
+#### Praticipate In Contributions
+
+1. Retrieve this repository
+2. Creata a new feature branch from main branch
+3. Submit code
+4. Create a new Pull Request
