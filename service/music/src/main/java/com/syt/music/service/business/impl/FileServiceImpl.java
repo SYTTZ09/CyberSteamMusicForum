@@ -8,7 +8,7 @@ import com.syt.model.music.dos.MusicInfo;
 import com.syt.model.music.dos.MusicOwner;
 import com.syt.model.music.dos.MusicState;
 import com.syt.model.music.dtos.req.UploadRequest;
-import com.syt.music.service.business.MusicService;
+import com.syt.music.service.business.FileService;
 import com.syt.music.service.data.MusicInfoService;
 import com.syt.music.service.data.MusicOwnerService;
 import com.syt.music.service.data.MusicStateService;
@@ -25,7 +25,7 @@ import java.util.Date;
 @Service
 @Transactional
 @Slf4j
-public class MusicServiceImpl implements MusicService {
+public class FileServiceImpl implements FileService {
 
     @Resource
     private FileStorageService fileStorageService;
