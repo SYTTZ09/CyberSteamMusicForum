@@ -4,6 +4,7 @@ import com.syt.model.common.dtos.req.LoadMoreRequest;
 import com.syt.model.common.dtos.res.Response;
 import com.syt.model.music.dos.MusicInfo;
 import com.syt.music.service.business.UserListService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/userList")
+@Api(value = "用户列表服务", tags = "用户列表服务")
 public class UserListController {
 
     @Resource
