@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -189,6 +190,10 @@ public class AccountServiceImpl implements AccountService {
         // 3.2.2 不存在 用户从未注册
         else {
             Date currentTime = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(currentTime);
+            calendar.set(Calendar.MILLISECOND, 0);
+            currentTime = calendar.getTime();
             // 3.2.2.1 添加用户认证数据
             UserAuth newUserAuth = new UserAuth();
             newUserAuth.setEmail(email);
@@ -203,7 +208,8 @@ public class AccountServiceImpl implements AccountService {
             Integer newUserAuthId = userAuthService
                     .getOne(Wrappers.<UserAuth>lambdaQuery()
                             .select(UserAuth::getId)
-                            .eq(UserAuth::getEmail, email)
+                            .eq(UserAuth::getCreateTime, currentTime)
+                            .eq(UserAuth::getUpdateTime, currentTime)
                     ).getId();
 
             // 3.2.2.2 添加用户激活数据
