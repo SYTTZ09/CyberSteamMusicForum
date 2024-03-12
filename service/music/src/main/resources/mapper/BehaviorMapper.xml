@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syt.music.mapper.business.BehaviorMapper">
+
+    <select id="selectMyLikeMusicCollectionByUserId" resultType="com.syt.model.music.dos.MusicCollection">
+        select music_collection.id, music_collection.user_id, music_collection.name, music_collection.create_time, music_collection.update_time
+        from music_collection
+                 left join music_collection_state on music_collection_state.collection_id = music_collection.id
+        where
+            music_collection.user_id = #{userId} and
+            music_collection_state.is_my_like = true
+    </select>
+
+    <update id="changeLikeState">
+        update music_collect_state set is_cancel = !is_cancel where collect_id = #{collectId};
+    </update>
+
+</mapper>

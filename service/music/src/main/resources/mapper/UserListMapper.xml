@@ -59,4 +59,24 @@
         offset #{offset}
     </select>
 
+    <select id="selectLikeMusicByCollectionId" resultType="com.syt.model.music.dos.MusicInfo">
+        select music_info.id,
+               music_info.name,
+               music_info.singer,
+               music_info.music_src,
+               music_info.image_src,
+               music_info.introduction,
+               music_info.create_time
+        from music_info
+                 left join music_collect
+                           on music_collect.music_id = music_info.id
+                 left join music_collect_state
+                           on music_collect_state.collect_id = music_collect.id
+        where music_collect.collection_id = #{id}
+          and music_collect_state.is_cancel = false
+        order by music_info.create_time
+            limit #{limit}
+        offset #{offset}
+    </select>
+
 </mapper>

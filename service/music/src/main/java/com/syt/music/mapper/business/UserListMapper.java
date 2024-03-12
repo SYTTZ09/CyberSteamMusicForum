@@ -13,4 +13,6 @@ public interface UserListMapper {
     List<MusicInfo> selectPublicMusicByUserId(@Param("id") Integer id, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     List<MusicInfo> selectPrivateMusicByUserId(@Param("id") Integer id, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    List<MusicInfo> selectLikeMusicByCollectionId(@Param("id") Integer id, @Param("offset") Integer offset, @Param("limit") Integer limit);
 }
