@@ -9,6 +9,7 @@
                music_info.music_src,
                music_info.image_src,
                music_info.introduction,
+               music_info.like_count,
                music_info.create_time
         from music_info
                  left join music_owner
@@ -26,6 +27,7 @@
                music_info.music_src,
                music_info.image_src,
                music_info.introduction,
+               music_info.like_count,
                music_info.create_time
         from music_info
                  left join music_owner
@@ -46,6 +48,7 @@
                music_info.music_src,
                music_info.image_src,
                music_info.introduction,
+               music_info.like_count,
                music_info.create_time
         from music_info
                  left join music_owner
@@ -66,6 +69,7 @@
                music_info.music_src,
                music_info.image_src,
                music_info.introduction,
+               music_info.like_count,
                music_info.create_time
         from music_info
                  left join music_collect
