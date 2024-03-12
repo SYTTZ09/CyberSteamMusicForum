@@ -5,8 +5,10 @@ import com.syt.model.common.dtos.res.Response;
 import com.syt.model.common.enums.ResponseCode;
 import com.syt.model.music.dos.MusicCollection;
 import com.syt.model.music.dos.MusicInfo;
+import com.syt.model.music.vos.MusicVO;
 import com.syt.music.mapper.business.BehaviorMapper;
 import com.syt.music.mapper.business.UserListMapper;
+import com.syt.music.service.business.BehaviorService;
 import com.syt.music.service.business.UserListService;
 import com.syt.util.thread.UserIdThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,9 @@ public class UserListServiceImpl implements UserListService {
     @Resource
     private BehaviorMapper behaviorMapper;
 
+    @Resource
+    private BehaviorService behaviorService;
+
     private Integer getUserId(Integer id) {
         return !id.equals(0) ? id : UserIdThreadLocalUtil.getUserId();
     }
@@ -40,10 +45,10 @@ public class UserListServiceImpl implements UserListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> allList(Integer id, LoadMoreRequest request) {
+    public Response<List<MusicVO>> allList(Integer id, LoadMoreRequest request) {
         // 校验参数
         if (id == null) {
-            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
+            return new Response<List<MusicVO>>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "id 不能为空",
                     new ArrayList<>()
             );
@@ -64,7 +69,7 @@ public class UserListServiceImpl implements UserListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -76,13 +81,13 @@ public class UserListServiceImpl implements UserListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> likeList(Integer id, LoadMoreRequest request) {
+    public Response<List<MusicVO>> likeList(Integer id, LoadMoreRequest request) {
         List<MusicInfo> musicInfoList = new ArrayList<>();
         // 校验参数
         if (id == null) {
-            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
+            return new Response<List<MusicVO>>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "id 不能为空",
-                    musicInfoList
+                    behaviorService.checkLikeState(musicInfoList)
             );
         }
         request.checkParam();
@@ -98,13 +103,13 @@ public class UserListServiceImpl implements UserListService {
         } else {
             return new Response<>(ResponseCode.NO_OPERATOR_AUTH.getCode(),
                     "很抱歉，您没有权限查看",
-                    musicInfoList
+                    behaviorService.checkLikeState(musicInfoList)
             );
         }
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -116,13 +121,13 @@ public class UserListServiceImpl implements UserListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> publicList(Integer id, LoadMoreRequest request) {
+    public Response<List<MusicVO>> publicList(Integer id, LoadMoreRequest request) {
         List<MusicInfo> musicInfoList = new ArrayList<>();
         // 校验参数
         if (id == null) {
-            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
+            return new Response<List<MusicVO>>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "id 不能为空",
-                    musicInfoList
+                    behaviorService.checkLikeState(musicInfoList)
             );
         }
         request.checkParam();
@@ -135,7 +140,7 @@ public class UserListServiceImpl implements UserListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -147,13 +152,13 @@ public class UserListServiceImpl implements UserListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> privateList(Integer id, LoadMoreRequest request) {
+    public Response<List<MusicVO>> privateList(Integer id, LoadMoreRequest request) {
         List<MusicInfo> musicInfoList = new ArrayList<>();
         // 校验参数
         if (id == null) {
-            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
+            return new Response<List<MusicVO>>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "id 不能为空",
-                    musicInfoList
+                    behaviorService.checkLikeState(musicInfoList)
             );
         }
         request.checkParam();
@@ -168,13 +173,13 @@ public class UserListServiceImpl implements UserListService {
         } else {
             return new Response<>(ResponseCode.NO_OPERATOR_AUTH.getCode(),
                     "很抱歉，您没有权限查看",
-                    musicInfoList
+                    behaviorService.checkLikeState(musicInfoList)
                     );
         }
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 }

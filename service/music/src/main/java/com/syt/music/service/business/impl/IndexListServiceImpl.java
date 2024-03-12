@@ -4,7 +4,9 @@ import com.syt.model.common.dtos.req.LoadMoreRequest;
 import com.syt.model.common.dtos.res.Response;
 import com.syt.model.common.enums.ResponseCode;
 import com.syt.model.music.dos.MusicInfo;
+import com.syt.model.music.vos.MusicVO;
 import com.syt.music.mapper.business.IndexListMapper;
+import com.syt.music.service.business.BehaviorService;
 import com.syt.music.service.business.IndexListService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ public class IndexListServiceImpl implements IndexListService {
 
     @Resource
     private IndexListMapper indexListMapper;
+    
+    @Resource
+    private BehaviorService behaviorService;
 
     /**
      * 主页获取最近音乐
@@ -28,7 +33,7 @@ public class IndexListServiceImpl implements IndexListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> latestList(LoadMoreRequest request) {
+    public Response<List<MusicVO>> latestList(LoadMoreRequest request) {
         request.checkParam();
         // 获取参数
         Integer currentLength = request.getCurrentLength();
@@ -38,7 +43,7 @@ public class IndexListServiceImpl implements IndexListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -49,7 +54,7 @@ public class IndexListServiceImpl implements IndexListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> dayList(LoadMoreRequest request) {
+    public Response<List<MusicVO>> dayList(LoadMoreRequest request) {
         request.checkParam();
         // 获取参数
         Integer currentLength = request.getCurrentLength();
@@ -59,7 +64,7 @@ public class IndexListServiceImpl implements IndexListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -70,7 +75,7 @@ public class IndexListServiceImpl implements IndexListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> monthList(LoadMoreRequest request) {
+    public Response<List<MusicVO>> monthList(LoadMoreRequest request) {
         request.checkParam();
         // 获取参数
         Integer currentLength = request.getCurrentLength();
@@ -80,7 +85,7 @@ public class IndexListServiceImpl implements IndexListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -91,7 +96,7 @@ public class IndexListServiceImpl implements IndexListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> yearList(LoadMoreRequest request) {
+    public Response<List<MusicVO>> yearList(LoadMoreRequest request) {
         request.checkParam();
         // 获取参数
         Integer currentLength = request.getCurrentLength();
@@ -101,7 +106,7 @@ public class IndexListServiceImpl implements IndexListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 
@@ -112,7 +117,7 @@ public class IndexListServiceImpl implements IndexListService {
      * @return
      */
     @Override
-    public Response<List<MusicInfo>> totalList(LoadMoreRequest request) {
+    public Response<List<MusicVO>> totalList(LoadMoreRequest request) {
         request.checkParam();
         // 获取参数
         Integer currentLength = request.getCurrentLength();
@@ -122,7 +127,7 @@ public class IndexListServiceImpl implements IndexListService {
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "获取成功",
-                musicInfoList
+                behaviorService.checkLikeState(musicInfoList)
         );
     }
 }

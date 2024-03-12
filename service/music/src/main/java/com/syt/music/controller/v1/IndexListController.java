@@ -3,7 +3,7 @@ package com.syt.music.controller.v1;
 
 import com.syt.model.common.dtos.req.LoadMoreRequest;
 import com.syt.model.common.dtos.res.Response;
-import com.syt.model.music.dos.MusicInfo;
+import com.syt.model.music.vos.MusicVO;
 import com.syt.music.service.business.IndexListService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,27 +25,27 @@ public class IndexListController {
 
     @PostMapping("/latest")
     @ApiOperation("最近播放")
-    public Response<List<MusicInfo>> latestList(@RequestBody LoadMoreRequest request) {
+    public Response<List<MusicVO>> latestList(@RequestBody LoadMoreRequest request) {
         return indexListService.latestList(request);
     }
     @PostMapping("/day")
     @ApiOperation("日榜")
-    public Response<List<MusicInfo>> dayList(@RequestBody LoadMoreRequest request) {
+    public Response<List<MusicVO>> dayList(@RequestBody LoadMoreRequest request) {
         return indexListService.dayList(request);
     }
     @PostMapping("/month")
     @ApiOperation("月榜")
-    public Response<List<MusicInfo>> monthList(@RequestBody LoadMoreRequest request) {
+    public Response<List<MusicVO>> monthList(@RequestBody LoadMoreRequest request) {
         return indexListService.monthList(request);
     }
     @PostMapping("/year")
     @ApiOperation("年榜")
-    public Response<List<MusicInfo>> yearList(@RequestBody LoadMoreRequest request) {
+    public Response<List<MusicVO>> yearList(@RequestBody LoadMoreRequest request) {
         return indexListService.yearList(request);
     }
     @PostMapping("/total")
     @ApiOperation("总榜")
-    public Response<List<MusicInfo>> totalList(@RequestBody LoadMoreRequest request) {
+    public Response<List<MusicVO>> totalList(@RequestBody LoadMoreRequest request) {
         return indexListService.totalList(request);
     }
 }

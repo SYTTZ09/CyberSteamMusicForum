@@ -1,12 +1,11 @@
 package com.syt.music.service.business.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.syt.model.common.dtos.res.Response;
 import com.syt.model.common.enums.ResponseCode;
-import com.syt.model.music.dos.MusicCollect;
-import com.syt.model.music.dos.MusicCollectState;
-import com.syt.model.music.dos.MusicCollection;
-import com.syt.model.music.dos.MusicCollectionState;
+import com.syt.model.music.dos.*;
+import com.syt.model.music.vos.MusicVO;
 import com.syt.music.mapper.business.BehaviorMapper;
 import com.syt.music.service.business.BehaviorService;
 import com.syt.music.service.data.MusicCollectService;
@@ -19,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @Service
 @Transactional
@@ -57,6 +55,12 @@ public class BehaviorServiceImpl implements BehaviorService {
         if (musicId == null) {
             return new Response<>(ResponseCode.PARAM_REQUIRE.getCode(),
                     "id 不能为空"
+            );
+        }
+        if (musicId <= 0) {
+            return new Response<>(ResponseCode.Fail.getCode(),
+                    "无法喜欢该音乐",
+                    "fail"
             );
         }
 
@@ -115,17 +119,70 @@ public class BehaviorServiceImpl implements BehaviorService {
             // 构建 newMusicCollectState
             MusicCollectState newMusicCollectState = new MusicCollectState();
             newMusicCollectState.setCollectId(dbMusicCollect.getId());
-            newMusicCollectState.setIsCancel(true);
+            newMusicCollectState.setIsCancel(false);
             newMusicCollectState.setCreateTime(currentTime);
             newMusicCollectState.setUpdateTime(currentTime);
             musicCollectStateService.save(newMusicCollectState);
+
+            // 修改 MusicInfo Like Count
+            // musicLikeCount++
+            behaviorMapper.addLikeCountById(musicId);
+        } else {
+            // 查看状态
+            MusicCollectState dbMusicCollectState = musicCollectStateService.getOne(Wrappers.<MusicCollectState>lambdaQuery()
+                    .eq(MusicCollectState::getCollectId, dbMusicCollect.getId())
+            );
+
+            if (dbMusicCollectState.getIsCancel().equals(false)) {
+                // 取消收藏
+                dbMusicCollectState.setIsCancel(true);
+                // musicLikeCount--
+                behaviorMapper.subtractLikeCountById(musicId);
+            } else {
+                // 收藏
+                dbMusicCollectState.setIsCancel(false);
+                // musicLikeCount++
+                behaviorMapper.addLikeCountById(musicId);
+            }
+            dbMusicCollectState.setUpdateTime(currentTime);
+            musicCollectStateService.updateById(dbMusicCollectState);
         }
-        // 改变其状态
-        behaviorMapper.changeLikeState(dbMusicCollect.getId());
 
         return new Response<>(ResponseCode.SUCCESS.getCode(),
                 "音乐喜欢状态改变成功",
                 "success"
         );
+    }
+
+    /**
+     * 检查 喜欢状态
+     *
+     * @param musicInfoList
+     * @return
+     */
+    @Override
+    public List<MusicVO> checkLikeState(List<MusicInfo> musicInfoList) {
+        ArrayList<MusicVO> musicVOList = new ArrayList<>();
+        Integer userId = UserIdThreadLocalUtil.getUserId();
+        if (userId != null) {
+            MusicCollection myLikeMusicCollection = behaviorMapper.selectMyLikeMusicCollectionByUserId(userId);
+            if (myLikeMusicCollection != null) {
+                List<MusicInfo> likeMusicList = behaviorMapper.selectLikeMusicByCollectionId(myLikeMusicCollection.getId());
+                Set<MusicInfo> likeMusicSet = new HashSet<>(likeMusicList);
+                for (MusicInfo musicInfo : musicInfoList) {
+                    MusicVO musicVO = new MusicVO();
+                    BeanUtil.copyProperties(musicInfo, musicVO);
+                    musicVO.setIsMyLike(likeMusicSet.contains(musicInfo));
+                    musicVOList.add(musicVO);
+                }
+                return musicVOList;
+            }
+        }
+        for (MusicInfo musicInfo : musicInfoList) {
+            MusicVO musicVO = new MusicVO();
+            BeanUtil.copyProperties(musicInfo, musicVO);
+            musicVOList.add(musicVO);
+        }
+        return musicVOList;
     }
 }
