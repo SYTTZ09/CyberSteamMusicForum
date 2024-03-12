@@ -6,10 +6,10 @@ using spring boot and spring cloud to coding a music forum
 
 #### Software Architecture
 
-jdk 1.8
-maven
-nacos
-minio
+1. jdk 1.8
+2. maven
+3. nacos
+4. minio
 
 #### Installation Tutorial
 
