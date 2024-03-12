@@ -3,7 +3,9 @@ package com.syt.music.service.business.impl;
 import com.syt.model.common.dtos.req.LoadMoreRequest;
 import com.syt.model.common.dtos.res.Response;
 import com.syt.model.common.enums.ResponseCode;
+import com.syt.model.music.dos.MusicCollection;
 import com.syt.model.music.dos.MusicInfo;
+import com.syt.music.mapper.business.BehaviorMapper;
 import com.syt.music.mapper.business.UserListMapper;
 import com.syt.music.service.business.UserListService;
 import com.syt.util.thread.UserIdThreadLocalUtil;
@@ -21,7 +23,10 @@ import java.util.List;
 public class UserListServiceImpl implements UserListService {
 
     @Resource
-    UserListMapper userListMapper;
+    private UserListMapper userListMapper;
+
+    @Resource
+    private BehaviorMapper behaviorMapper;
 
     private Integer getUserId(Integer id) {
         return !id.equals(0) ? id : UserIdThreadLocalUtil.getUserId();
@@ -72,33 +77,34 @@ public class UserListServiceImpl implements UserListService {
      */
     @Override
     public Response<List<MusicInfo>> likeList(Integer id, LoadMoreRequest request) {
-//        // 校验参数
-//        if (id == null) {
-//            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
-//                    "id 不能为空",
-//                    new ArrayList<>()
-//            );
-//        }
-//        request.checkParam();
-//        // 获取参数
-//        Integer currentLength = request.getCurrentLength();
-//        Integer loadCount = request.getLoadCount();
-//        Integer userId = getUserId(id);
-//
-//        List<MusicInfo> musicInfoList;
-//        // 是否是自己
-//        if (userId.equals(UserIdThreadLocalUtil.getUserId())) {
-//            musicInfoList = userListMapper.selectAllMusicByUserId(userId, currentLength, loadCount);
-//        } else {
-//            musicInfoList = userListMapper.selectAllPublicMusicByUserId(userId, currentLength, loadCount);
-//        }
-//
-//        return new Response<>(ResponseCode.SUCCESS.getCode(),
-//                "获取成功",
-//                musicInfoList
-//        );
-        return new Response<>(ResponseCode.Fail.getCode(),
-                "很抱歉，该功能尚未实现，敬请期待"
+        List<MusicInfo> musicInfoList = new ArrayList<>();
+        // 校验参数
+        if (id == null) {
+            return new Response<List<MusicInfo>>(ResponseCode.PARAM_REQUIRE.getCode(),
+                    "id 不能为空",
+                    musicInfoList
+            );
+        }
+        request.checkParam();
+        // 获取参数
+        Integer currentLength = request.getCurrentLength();
+        Integer loadCount = request.getLoadCount();
+        Integer userId = getUserId(id);
+
+        // 是否是自己
+        if (userId.equals(UserIdThreadLocalUtil.getUserId())) {
+            MusicCollection myLikeMusicCollection = behaviorMapper.selectMyLikeMusicCollectionByUserId(userId);
+            musicInfoList = userListMapper.selectLikeMusicByCollectionId(myLikeMusicCollection.getId(), currentLength, loadCount);
+        } else {
+            return new Response<>(ResponseCode.NO_OPERATOR_AUTH.getCode(),
+                    "很抱歉，您没有权限查看",
+                    musicInfoList
+            );
+        }
+
+        return new Response<>(ResponseCode.SUCCESS.getCode(),
+                "获取成功",
+                musicInfoList
         );
     }
 

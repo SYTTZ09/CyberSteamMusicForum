@@ -1,6 +1,9 @@
 #spring:
 #  cloud:
 #    gateway:
+#      httpclient:
+#        pool:
+#          maxIdleTime: 20000
 #      globalcors:
 #        cors-configurations:
 #          '[/**]': # 匹配所有请求
@@ -13,5 +16,11 @@
 #          uri: lb://cyber-steam-music-user
 #          predicates:
 #            - Path=/user/**
+#          filters:
+#            - StripPrefix=1
+#        - id: music
+#          uri: lb://cyber-steam-music-music
+#          predicates:
+#            - Path=/music/**
 #          filters:
 #            - StripPrefix=1
