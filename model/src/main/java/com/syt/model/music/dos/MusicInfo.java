@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.base.Objects;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -53,9 +53,14 @@ public class MusicInfo implements Serializable {
     private String introduction;
 
     /**
+     * Like
+     */
+    @TableField("like_count")
+    private Integer likeCount;
+
+    /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy年MM月dd日")
     @TableField("create_time")
     private Date createTime;
 
@@ -64,4 +69,17 @@ public class MusicInfo implements Serializable {
      */
     @TableField("update_time")
     private Date updateTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MusicInfo musicInfo = (MusicInfo) o;
+        return Objects.equal(id, musicInfo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
