@@ -32,7 +32,7 @@
                  left join music_state
                            on music_state.music_id = music_info.id
         where music_state.is_public = true and music_info.create_time &gt; date_sub(now(),interval 1 day)
-        order by music_info.create_time desc
+        order by music_info.like_count desc
         limit #{limit} offset #{offset}
     </select>
 
@@ -49,7 +49,7 @@
                  left join music_state
                            on music_state.music_id = music_info.id
         where music_state.is_public = true and music_info.create_time &gt; date_sub(now(),interval 1 month)
-        order by music_info.create_time desc
+        order by music_info.like_count desc
         limit #{limit} offset #{offset}
     </select>
 
@@ -66,7 +66,7 @@
                  left join music_state
                            on music_state.music_id = music_info.id
         where music_state.is_public = true and music_info.create_time &gt; date_sub(now(),interval 1 year)
-        order by music_info.create_time desc
+        order by music_info.like_count desc
         limit #{limit} offset #{offset}
     </select>
 
@@ -83,7 +83,7 @@
                  left join music_state
                            on music_state.music_id = music_info.id
         where music_state.is_public = true
-        order by music_info.create_time desc
+        order by music_info.like_count desc
         limit #{limit} offset #{offset}
     </select>
 
