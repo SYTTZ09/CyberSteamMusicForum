@@ -9,6 +9,7 @@ using spring boot and spring cloud to coding a music forum
 jdk 1.8
 maven
 nacos
+minio
 
 #### Installation Tutorial
 
