@@ -200,7 +200,8 @@ public class AccountServiceImpl implements AccountService {
             // 生成盐
             String salt = RandomUtil.randomString(32);
             newUserAuth.setSalt(salt);
-            newUserAuth.setPassword(DigestUtil.md5Hex(password + salt));
+            String encryptPassword = DigestUtil.md5Hex(password + salt);
+            newUserAuth.setPassword(encryptPassword);
             newUserAuth.setCreateTime(currentTime);
             newUserAuth.setUpdateTime(currentTime);
             userAuthService.save(newUserAuth);
@@ -208,6 +209,9 @@ public class AccountServiceImpl implements AccountService {
             Integer newUserAuthId = userAuthService
                     .getOne(Wrappers.<UserAuth>lambdaQuery()
                             .select(UserAuth::getId)
+                            .eq(UserAuth::getEmail, email)
+                            .eq(UserAuth::getSalt, salt)
+                            .eq(UserAuth::getPassword, encryptPassword)
                             .eq(UserAuth::getCreateTime, currentTime)
                             .eq(UserAuth::getUpdateTime, currentTime)
                     ).getId();
