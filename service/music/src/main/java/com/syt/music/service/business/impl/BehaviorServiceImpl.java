@@ -112,6 +112,8 @@ public class BehaviorServiceImpl implements BehaviorService {
 
             // 获取 newMusicCollect
             dbMusicCollect = musicCollectService.getOne(Wrappers.<MusicCollect>lambdaQuery()
+                    .eq(MusicCollect::getCollectionId, dbMusicCollection.getId())
+                    .eq(MusicCollect::getMusicId, musicId)
                     .eq(MusicCollect::getCreateTime, currentTime)
                     .eq(MusicCollect::getUpdateTime, currentTime)
             );
