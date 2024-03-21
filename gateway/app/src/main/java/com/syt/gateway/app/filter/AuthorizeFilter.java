@@ -21,13 +21,23 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         // 判断是否是放行请求
-        if (request.getURI().getPath().contains("/account/login") ||
-                request.getURI().getPath().contains("/account/register") ||
-                request.getURI().getPath().contains("/account/resetPassword") ||
-                request.getURI().getPath().contains("/account/activate")
-        ) {
-            // 放行
-            return chain.filter(exchange);
+        String url = request.getURI().getPath();
+        if (url.contains("/user/")) {
+            if (url.contains("/account/login") ||
+                    url.contains("/account/register") ||
+                    url.contains("/account/activate") ||
+                    url.contains("/account/forgetPassword") ||
+                    url.contains("/account/resetPassword")
+            ) {
+                // 放行
+                return chain.filter(exchange);
+            }
+        } else if (url.contains("/music/")) {
+            if (url.contains("/indexList/")
+            ) {
+                // 放行
+                return chain.filter(exchange);
+            }
         }
         // 获取 token
         String token = request.getHeaders().getFirst("token");
