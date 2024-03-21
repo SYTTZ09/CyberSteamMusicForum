@@ -9,4 +9,9 @@
 #  mapper-locations: classpath:mapper/**Mapper.xml
 #  # 设置别名扫描路径
 #  type-aliases-package: com.syt.model.user.dos
-#
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 10000
+#        readTimeout: 10000
