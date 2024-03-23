@@ -1,25 +1,15 @@
 package com.syt.model.music.dos;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.syt.model.common.dos.DO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("music_owner")
-public class MusicOwner  implements Serializable {
-
-    private static final long serializableUID = 1L;
-
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+public class MusicOwner  extends DO {
 
     /**
      * 音乐 id
@@ -32,16 +22,4 @@ public class MusicOwner  implements Serializable {
      */
     @TableField("user_id")
     private Integer userId;
-
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }

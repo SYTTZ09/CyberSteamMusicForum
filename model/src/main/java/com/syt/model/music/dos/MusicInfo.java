@@ -1,26 +1,14 @@
 package com.syt.model.music.dos;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.google.common.base.Objects;
+import com.syt.model.common.dos.DO;
 import lombok.Data;
-
-import java.io.Serializable;
-import java.util.Date;
 
 @Data
 @TableName("music_info")
-public class MusicInfo implements Serializable {
-
-    private static final long serializableUID = 1L;
-
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+public class MusicInfo extends DO {
 
     /**
      * 歌名
@@ -58,24 +46,12 @@ public class MusicInfo implements Serializable {
     @TableField("like_count")
     private Integer likeCount;
 
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MusicInfo musicInfo = (MusicInfo) o;
-        return Objects.equal(id, musicInfo.id);
+        return Objects.equal(this.id, musicInfo.id);
     }
 
     @Override

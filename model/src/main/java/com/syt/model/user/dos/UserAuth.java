@@ -1,25 +1,15 @@
 package com.syt.model.user.dos;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.syt.model.common.dos.DO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("user_auth")
-public class UserAuth implements Serializable {
-
-    private static final long serializableUID = 1L;
-
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+public class UserAuth extends DO {
 
     /**
      * 邮箱
@@ -38,16 +28,4 @@ public class UserAuth implements Serializable {
      */
     @TableField("salt")
     private String salt;
-
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }

@@ -4,16 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.syt.model.common.dos.DO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("music_collect")
-public class MusicCollect implements Serializable {
-
-    private static final long serializableUID = 1L;
+public class MusicCollect extends DO {
 
     /**
      * 主键
@@ -32,16 +30,4 @@ public class MusicCollect implements Serializable {
      */
     @TableField("music_id")
     private Integer musicId;
-
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }

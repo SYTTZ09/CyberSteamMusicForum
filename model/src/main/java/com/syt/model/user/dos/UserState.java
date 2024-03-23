@@ -1,24 +1,15 @@
 package com.syt.model.user.dos;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModelProperty;
+import com.syt.model.common.dos.DO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("user_state")
-public class UserState {
-
-    /**
-     * 主键
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    @ApiModelProperty(value = "主键")
-    private Integer id;
+public class UserState extends DO {
 
     /**
      * 用户认证表主键
@@ -31,16 +22,4 @@ public class UserState {
      */
     @TableField("is_activated")
     private Boolean isActivated;
-
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
 }
