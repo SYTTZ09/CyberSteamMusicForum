@@ -9,7 +9,7 @@ import java.util.*;
 public class JwtUtil {
     // token 有效期
     // 毫秒 秒 分 时 天
-    private static final int TOKEN_TIME_OUT = 1000 * 60 * 60 * 12 * 15;
+    private static final int TOKEN_TIME_OUT = 1000 * 60 * 60 * 24 * 15;
     // 密钥
     private static final String TOKEN_ENCRYPT_KEY = "09848939HR9FWF985704830G35GH934FJ9483T4389F4J3GH";
     // 刷新间隔
