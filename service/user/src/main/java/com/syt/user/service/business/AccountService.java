@@ -47,4 +47,10 @@ public interface AccountService {
      * @return
      */
     Response<String> resetPassword(String email, String password, String token);
+
+    /**
+     * 刷新 token
+     * @return
+     */
+    Response<String> isLogin();
 }

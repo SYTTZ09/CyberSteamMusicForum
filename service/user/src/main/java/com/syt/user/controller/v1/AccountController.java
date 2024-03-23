@@ -1,9 +1,9 @@
 package com.syt.user.controller.v1;
 
 import com.syt.model.common.dtos.res.Response;
+import com.syt.model.user.dtos.req.ForgetPasswordRequest;
 import com.syt.model.user.dtos.req.LoginRequest;
 import com.syt.model.user.dtos.req.RegisterRequest;
-import com.syt.model.user.dtos.req.ForgetPasswordRequest;
 import com.syt.model.user.dtos.res.LoginResponse;
 import com.syt.user.service.business.AccountService;
 import io.swagger.annotations.Api;
@@ -48,5 +48,11 @@ public class AccountController {
     @ApiOperation("重设密码")
     public String resetPassword(@RequestParam String email, @RequestParam String password, @RequestParam String token) {
         return accountService.resetPassword(email, password, token).getMessage();
+    }
+
+    @GetMapping("/isLogin")
+    @ApiOperation("登录是否过期")
+    public Response<String> isLogin() {
+        return accountService.isLogin();
     }
 }

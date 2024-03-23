@@ -13,9 +13,9 @@ import com.syt.model.user.dos.UserActivate;
 import com.syt.model.user.dos.UserAuth;
 import com.syt.model.user.dos.UserInfo;
 import com.syt.model.user.dos.UserState;
+import com.syt.model.user.dtos.req.ForgetPasswordRequest;
 import com.syt.model.user.dtos.req.LoginRequest;
 import com.syt.model.user.dtos.req.RegisterRequest;
-import com.syt.model.user.dtos.req.ForgetPasswordRequest;
 import com.syt.model.user.dtos.res.LoginResponse;
 import com.syt.user.mapper.business.AccountMapper;
 import com.syt.user.service.business.AccountService;
@@ -24,6 +24,8 @@ import com.syt.user.service.data.UserAuthService;
 import com.syt.user.service.data.UserInfoService;
 import com.syt.user.service.data.UserStateService;
 import com.syt.util.JwtUtil;
+import com.syt.util.thread.TokenThreadLocalUtil;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.client.ServiceInstance;
@@ -524,6 +526,25 @@ public class AccountServiceImpl implements AccountService {
                 "修改成功，感谢使用蒸汽赛博平台",
                 "success"
         );
+    }
+
+    /**
+     * 刷新 token
+     *
+     * @return
+     */
+    @Override
+    public Response<String> isLogin() {
+        String token = TokenThreadLocalUtil.getToken();
+        Claims claims = JwtUtil.getClaims(token);
+        int status = JwtUtil.verify(claims);
+        if (status != -1) {
+            return new Response<>(ResponseCode.Fail.getCode(), "无需更新");
+        }
+        // 获取 userId
+        Object id = claims.get("id");
+        String jwt = JwtUtil.getJwt((Integer) id);
+        return new Response<>(ResponseCode.SUCCESS.getCode(), jwt);
     }
 
 
