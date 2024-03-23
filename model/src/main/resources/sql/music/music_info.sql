@@ -7,6 +7,8 @@ create table `music_info`
     `music_src`    varchar(512) comment '音乐',
     `image_src`    varchar(512) comment '封面',
     `introduction` varchar(1024) comment '介绍',
+    `like_count`   int comment '喜欢次数',
+    `play_count`   int comment '播放次数',
     `create_time`  datetime comment '创建时间',
     `update_time`  datetime comment '更新时间',
     PRIMARY KEY (`id`)
